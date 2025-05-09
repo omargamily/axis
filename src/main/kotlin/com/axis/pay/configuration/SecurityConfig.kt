@@ -58,9 +58,10 @@ class SecurityConfig(
                 authorize
                     .requestMatchers("/auth/signup", "/error").permitAll()
                     .requestMatchers("/auth/login").permitAll()
-                    .requestMatchers("/api/**").authenticated()
                     .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**").permitAll()
+                    .requestMatchers("/").permitAll()
+                    .requestMatchers("/api-docs/**").permitAll()
+                    .requestMatchers("/api/**").authenticated()
                     .anyRequest().authenticated()
             }
             .oauth2ResourceServer { oauth2 ->

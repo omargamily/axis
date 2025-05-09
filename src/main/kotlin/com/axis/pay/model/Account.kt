@@ -1,12 +1,6 @@
 package com.axis.pay.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.util.UUID
 
 @Entity
@@ -18,6 +12,12 @@ data class Account(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
+
+    @Column(nullable = false)
+    var balance: Double = 0.0,
+
+    @OneToMany(mappedBy = "account", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val transactions: List<Transaction> = emptyList(),
 
     @Column(nullable = false)
     val createdAt: Long = System.currentTimeMillis()
