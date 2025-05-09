@@ -47,7 +47,6 @@ class AuthControllerIntegrationTest {
     fun setup() {
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
-        userRepository.deleteAll()
     }
 
     @AfterEach

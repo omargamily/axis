@@ -26,6 +26,10 @@ class UserService(
         return userRepository.findByEmail(email) ?: throw UsernameNotFoundException("User not found with email: $email")
     }
 
+    fun findById(id: UUID): User {
+        return userRepository.findById(id).orElseThrow { UsernameNotFoundException("User not found with id: $id") }
+    }
+
     fun createUser(email: String, password: String): User {
         if (userRepository.findByEmail(email) != null) {
             throw ResourceConflictException("User already exists")
