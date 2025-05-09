@@ -6,6 +6,7 @@ import com.axis.pay.controller.dto.SigninResponseDto
 import com.axis.pay.controller.dto.SignupRequestDto
 import com.axis.pay.model.User
 import com.axis.pay.model.repository.UserRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -27,7 +28,7 @@ class UserService(
     }
 
     fun findById(id: UUID): User {
-        return userRepository.findById(id).orElseThrow { UsernameNotFoundException("User not found with id: $id") }
+        return userRepository.findByIdOrNull(id) ?: throw UsernameNotFoundException("User not found with id: $id")
     }
 
     fun createUser(email: String, password: String): User {
