@@ -11,3 +11,6 @@ class ResourceConflictException(message: String) : RuntimeException(message)
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 class ResourceNotFoundException(message: String) : RuntimeException(message)
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class BadRequestException(message: String) : RuntimeException(message)

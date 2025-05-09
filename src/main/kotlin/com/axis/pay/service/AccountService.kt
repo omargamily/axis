@@ -1,5 +1,6 @@
 package com.axis.pay.service
 
+import com.axis.pay.BadRequestException
 import com.axis.pay.ResourceConflictException
 import com.axis.pay.ResourceNotFoundException
 import com.axis.pay.UnAuthorizedException
@@ -60,15 +61,15 @@ class AccountService(
         if (amount <= 0) {
             throw IllegalArgumentException("Withdrawal amount must be positive")
         }
-        val account = accountRepository.findById(accountId)
-            .orElseThrow { EntityNotFoundException("Account not found with id: $accountId") }
+        val account = accountRepository.findByIdOrNull(accountId)
+            ?: throw ResourceNotFoundException("Account not found with id: $accountId")
 
         if (account.user.id != userId) {
-            throw SecurityException("User not authorized to withdraw from this account")
+            throw UnAuthorizedException("User not authorized to withdraw from this account")
         }
 
         if (account.balance < amount) {
-            throw ResourceConflictException("Insufficient funds for withdrawal. Current balance: ${account.balance}")
+            throw BadRequestException("Insufficient funds for withdrawal. Current balance: ${account.balance}")
         }
 
         account.balance -= amount

@@ -1,5 +1,6 @@
 package com.axis.pay.service
 
+import com.axis.pay.BadRequestException
 import com.axis.pay.ResourceConflictException
 import com.axis.pay.ResourceNotFoundException
 import com.axis.pay.UnAuthorizedException
@@ -16,7 +17,6 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import io.mockk.verify
-import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -146,7 +146,7 @@ class AccountServiceTest {
         }
 
         @Test
-        fun `deposit should throw SecurityException if user is not authorized`() {
+        fun `deposit should throw UnAuthorizedException if user is not authorized`() {
             val accountId = UUID.randomUUID()
             val otherUserId = UUID.randomUUID()
             val user = User(id = otherUserId, email = "other@example.com", hashedPassword = "pwd")
@@ -204,17 +204,17 @@ class AccountServiceTest {
             every { accountRepository.findById(testAccountId) } returns Optional.empty()
 
             assertThatThrownBy { accountService.withdraw(testAccountId, 50.0, testUserId) }
-                .isInstanceOf(EntityNotFoundException::class.java)
+                .isInstanceOf(ResourceNotFoundException::class.java)
                 .hasMessage("Account not found with id: $testAccountId")
         }
 
         @Test
-        fun `withdraw should throw SecurityException if user is not authorized for account`() {
+        fun `withdraw should throw UnAuthorizedException if user is not authorized for account`() {
             val account = Account(id = testAccountId, user = otherUser, balance = 100.0)
             every { accountRepository.findById(testAccountId) } returns Optional.of(account)
 
             assertThatThrownBy { accountService.withdraw(testAccountId, 50.0, testUserId) }
-                .isInstanceOf(SecurityException::class.java)
+                .isInstanceOf(UnAuthorizedException::class.java)
                 .hasMessage("User not authorized to withdraw from this account")
         }
 
@@ -227,7 +227,7 @@ class AccountServiceTest {
             every { accountRepository.findById(testAccountId) } returns Optional.of(account)
 
             assertThatThrownBy { accountService.withdraw(testAccountId, withdrawalAmount, testUserId) }
-                .isInstanceOf(ResourceConflictException::class.java)
+                .isInstanceOf(BadRequestException::class.java)
                 .hasMessage("Insufficient funds for withdrawal. Current balance: $initialBalance")
         }
     }
@@ -256,7 +256,7 @@ class AccountServiceTest {
         }
 
         @Test
-        fun `getBalance should throw SecurityException if user is not authorized for account`() {
+        fun `getBalance should throw UnAuthorizedException if user is not authorized for account`() {
             val account = Account(id = testAccountId, user = otherUser, balance = 100.0)
             every { accountRepository.findById(testAccountId) } returns Optional.of(account)
 

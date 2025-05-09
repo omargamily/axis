@@ -236,7 +236,7 @@ class AccountControllerIntegrationTest {
     }
 
     @Test
-    fun `should Return 409 For Insufficient Funds`() {
+    fun `should Return 400 For Insufficient Funds`() {
         accountRepository.findById(testAccountId).ifPresent {
             it.balance = 10.0
             accountRepository.save(it)
@@ -252,7 +252,7 @@ class AccountControllerIntegrationTest {
         } When {
             post("/api/accounts/$testAccountId/withdraw")
         } Then {
-            statusCode(HttpStatus.CONFLICT.value())
+            statusCode(HttpStatus.BAD_REQUEST.value())
             body("message", equalTo("Insufficient funds for withdrawal. Current balance: 10.0"))
         }
     }
@@ -412,7 +412,7 @@ class AccountControllerIntegrationTest {
         } When {
             post("/api/accounts/$testAccountId/withdraw")
         } Then {
-            statusCode(HttpStatus.CONFLICT.value())
+            statusCode(HttpStatus.BAD_REQUEST.value())
         }
 
         val accountAfterFailedWithdraw = accountRepository.findById(testAccountId).get()
