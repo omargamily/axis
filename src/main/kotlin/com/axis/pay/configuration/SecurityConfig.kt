@@ -58,9 +58,10 @@ class SecurityConfig(
                 authorize
                     .requestMatchers("/auth/signup", "/error").permitAll()
                     .requestMatchers("/auth/login").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/").permitAll()
-                    .requestMatchers("/api-docs/**").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
+                    .requestMatchers("/v3/api-docs/**", "/api-docs/**").permitAll()
+                    .requestMatchers("/webjars/**").permitAll()
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().authenticated()
             }
