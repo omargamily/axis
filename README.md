@@ -177,6 +177,10 @@ While the current implementation meets the core requirements, the following area
 6. **Comprehensive Logging & Observability:**
     * **Details:** Implement structured logging (e.g., JSON format with SLF4J and Logback/Log4j2), including contextual information like trace IDs and user IDs.
     * **Benefit:** Facilitates easier debugging and proactive issue detection.
+
+7. **Code Optimization**
+   * **Details:** Create a base entity with the following (id, created_at and updated_at) fields for all other entities to extend. We can also create a base integrationTest class for all integration tests to extend (The base integrationTest class should contain rest assured configuration and common annotations).
+   * **Benefit:** Cleaner code, following the DRY principle.
      
 ## 10. Challenges & Learnings
 * **Data Consistency:** Ensuring that account balances are always accurate, especially with concurrent operations (partially addressed by `@Transactional`, with optimistic locking as a future improvement).
