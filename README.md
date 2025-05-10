@@ -10,7 +10,7 @@ docker compose up -d
 1. Clone the app
 2. Update datasource uri host, and credentials in `application.properties` to point your database instance
 ---
-## 1. Project Overview
+## 1. Project Technical Overview
 
 This document outlines the technical plan and current implementation status of the Axis Pay Core Banking System. The system provides fundamental fintech functionalities, enabling users to manage accounts and perform financial transactions. The initial phase focused on delivering core features: user authentication, account opening, deposits, withdrawals, and balance inquiries, adhering to the requirements.
 
