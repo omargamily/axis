@@ -68,8 +68,6 @@ The following core functionalities have been implemented and tested:
 
 ## 6. Security Implementation
 
-Security is a critical aspect of the system:
-
 * **Authentication:** JWT-based token authentication is implemented. The `/auth/login` endpoint issues JWTs upon successful credential validation.
 * **Authorization:** API endpoints under `/api/**` require a valid JWT. Account-specific operations verify that the authenticated user owns the target account.
 * **Password Management:** User passwords are salted and hashed using BCrypt via `PasswordEncoder`.
